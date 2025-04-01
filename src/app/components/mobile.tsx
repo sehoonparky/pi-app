@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function mobile() {
   return (
-    <div className='bg-[#261339]'>
+    <div className='bg-linear-to-r from-[#82358e] to-[#483e89]'>
       <div className='flex flex-col items-center w-[90%] mx-auto pb-[3rem] sm:flex-row sm:items-center sm:justify-around sm:w-[57%] sm:gap-36 sm:mx-auto sm:py-24'>
         {/* Image section */}
         <Image src='/phone.webp' alt='mobile' width={323} height={473} />

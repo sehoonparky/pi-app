@@ -46,8 +46,8 @@ export default function Hero() {
   }, []);
 
   return (
-    <main className='bg-[url("/main-bg.jpg")] bg-cover bg-center bg-no-repeat min-h-screen'>
-      <div className='container mx-auto max-w-[1425px]'>
+    <main className='bg-[url("/main-bg.jpg")] bg-cover bg-center bg-no-repeat min-h-screen relative'>
+      <div className='container mx-auto max-w-[1425px] relative'>
         <div className=' px-4 lg:px-16'>
           <div className='flex flex-col lg:flex-row items-center justify-between pt-20 lg:mt-14'>
             {/* Left content */}
@@ -77,7 +77,10 @@ export default function Hero() {
 
             {/* Right content - Phone image */}
             <div className='lg:w-1/2 mt-16 lg:mt-0'>
-              <div className='relative inline-block group z-0' ref={containerRef}>
+              <div
+                className='relative inline-block group isolate'
+                ref={containerRef}
+              >
                 <Image
                   src='/pi_video-6.webp'
                   alt='Image of a cell phone'
@@ -104,6 +107,7 @@ export default function Hero() {
               flex items-center justify-center 
               w-20 h-20 rounded-full 
               border-2 border-white 
+              relative z-10
             `}
                   >
                     <FaPlay className='text-white text-xl ml-1 group-hover:text-opacity-80' />
