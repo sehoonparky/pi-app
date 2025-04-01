@@ -56,10 +56,10 @@ export default function SignIn() {
   };
 
   return (
-    <div className='h-[100vh] lg:min-h-[100vh] flex flex-col lg:flex-row bg-[url("/main-bg.jpg")] bg-cover bg-center bg-no-repeat min-h-screen'>
+    <div className='lg:min-h-[100vh] flex flex-col lg:flex-row bg-[url("/main-bg.jpg")] bg-cover bg-center bg-no-repeat '>
       <div className='lg:w-1/2 flex flex-col justify-center p-8 bg-white'>
         <div className='max-w-md w-full mx-auto'>
-          <div className='bg-[#28123d] p-8'>
+          <div className='bg-[#28123d] p-8 flex justify-center items-center'>
             <Image
               src='/pi-network.webp'
               alt='logo'

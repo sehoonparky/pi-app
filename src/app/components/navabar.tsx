@@ -78,16 +78,17 @@ export default function Navbar() {
     };
   }, []);
 
-  // on large screens (>= 1024px)
-  // Detect scroll direction
+  // Detect scroll direction - now for both mobile and desktop
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY < lastScrollY.current) {
+      const currentScrollY = window.scrollY;
+
+      if (currentScrollY < lastScrollY.current) {
         setIsScrollingUp(true);
       } else {
         setIsScrollingUp(false);
       }
-      lastScrollY.current = window.scrollY;
+      lastScrollY.current = currentScrollY;
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -126,11 +127,16 @@ export default function Navbar() {
     ],
   };
 
+  // Get background color based on scroll direction
+  const getHeaderBgClass = () => {
+    return isScrollingUp ? "bg-[#261339]" : "bg-[#593b8b]";
+  };
+
   return (
     <header
       className={`
         fixed top-0 left-0 right-0 w-full
-        ${isScrollingUp ? "bg-[#261339]" : "lg:bg-[#593b8b]"}
+        ${getHeaderBgClass()}
         z-[1200] transition-colors duration-300
       `}
     >
@@ -220,46 +226,54 @@ export default function Navbar() {
               {/* Social Icons */}
               <ul className='flex items-center space-x-4 ml-4'>
                 <li className='transition-transform hover:scale-125 duration-200'>
-                  <Link
-                    href='https://twitter.com/pi_network'
-                    target='_blank'
-                    className='text-stone-300 transition-colors'
-                  >
-                    <Image
-                      src='/icons8-x.svg'
-                      alt='x-icon'
-                      width={20}
-                      height={20}
-                      style={{ filter: "brightness(0) invert(1)" }}
-                    />
-                  </Link>
+                  <div className='transform transition-transform duration-300 hover:-translate-y-2'>
+                    <Link
+                      href='https://twitter.com/pi_network'
+                      target='_blank'
+                      className='text-stone-300 block'
+                    >
+                      <Image
+                        src='/icons8-x.svg'
+                        alt='x-icon'
+                        width={24}
+                        height={24}
+                        style={{ filter: "brightness(0) invert(1)" }}
+                      />
+                    </Link>
+                  </div>
                 </li>
                 <li>
-                  <Link
-                    href='https://www.facebook.com/PiNetwork/'
-                    target='_blank'
-                    className='text-stone-300 transition-colors'
-                  >
-                    <FaFacebook size={20} className='' />
-                  </Link>
+                  <div className='transform transition-transform duration-300 hover:-translate-y-2'>
+                    <Link
+                      href='https://www.facebook.com/PiNetwork/'
+                      target='_blank'
+                      className='text-stone-300 block'
+                    >
+                      <FaFacebook size={24} />
+                    </Link>
+                  </div>
                 </li>
                 <li>
-                  <Link
-                    href='https://www.youtube.com/channel/UC5KVbmYpYhKkVjkRyUeRdbA'
-                    target='_blank'
-                    className='text-stone-300 transition-colors'
-                  >
-                    <FaYoutube size={20} />
-                  </Link>
+                  <div className='transform transition-transform duration-300 hover:-translate-y-2'>
+                    <Link
+                      href='https://www.youtube.com/channel/UC5KVbmYpYhKkVjkRyUeRdbA'
+                      target='_blank'
+                      className='text-stone-300 block'
+                    >
+                      <FaYoutube size={24} />
+                    </Link>
+                  </div>
                 </li>
                 <li>
-                  <Link
-                    href='https://www.instagram.com/pi_network/'
-                    target='_blank'
-                    className='text-stone-300 transition-colors'
-                  >
-                    <FaInstagram size={20} />
-                  </Link>
+                  <div className='transform transition-transform duration-300 hover:-translate-y-2'>
+                    <Link
+                      href='https://www.instagram.com/pi_network/'
+                      target='_blank'
+                      className='text-stone-300 block'
+                    >
+                      <FaInstagram size={24} />
+                    </Link>
+                  </div>
                 </li>
               </ul>
 
@@ -273,30 +287,27 @@ export default function Navbar() {
             </div>
 
             {/* Mobile Menu */}
-            <div
-              className={`md:hidden flex items-center space-x-4 sticky ${
-                isScrollingUp ? "bg-[#261339]" : "lg:bg-purple-950"
-              }`}
-            >
-              <FaSearch size={24} onClick={() => setOpenSearch(!openSearch)} />
+            <div className={`md:hidden flex items-center space-x-4`}>
+              <FaSearch
+                size={24}
+                className='text-stone-300 cursor-pointer'
+                onClick={() => setOpenSearch(!openSearch)}
+              />
               <button
+                title='button'
                 type='button'
                 onClick={toggleMenu}
                 className='text-white transition-colors'
               >
-                {isOpen ? (
-                  <FaTimes size={24} className='z-[999]' />
-                ) : (
-                  <div>
-                    <Image
-                      src='/align-left.svg'
-                      alt='hamburger-icon'
-                      width={25}
-                      height={25}
-                      style={{ filter: "brightness(0) invert(1)" }}
-                    />
-                  </div>
-                )}
+                <div>
+                  <Image
+                    src='/align-left.svg'
+                    alt='hamburger-icon'
+                    width={25}
+                    height={25}
+                    style={{ filter: "brightness(0) invert(1)" }}
+                  />
+                </div>
               </button>
             </div>
 
@@ -356,49 +367,65 @@ export default function Navbar() {
                 ))}
               </nav>
 
-              {/* Social Icons (Mobile) */}
-              <div className='flex items-center space-x-4 mt-20'>
-                <Link
-                  href='https://twitter.com/pi_network'
-                  target='_blank'
-                  className='text-stone-300 transition-colors'
-                >
-                  <Image
-                    src='/icons8-x.svg'
-                    alt='x-icon'
-                    width={24}
-                    height={24}
-                    style={{ filter: "brightness(0) invert(1)" }}
-                  />
-                </Link>
-                <Link
-                  href='https://www.facebook.com/PiNetwork/'
-                  target='_blank'
-                  className='text-stone-300 transition-colors'
-                >
-                  <FaFacebook size={24} />
-                </Link>
-                <Link
-                  href='https://www.youtube.com/channel/UC5KVbmYpYhKkVjkRyUeRdbA'
-                  target='_blank'
-                  className='text-stone-300 transition-colors'
-                >
-                  <FaYoutube size={24} />
-                </Link>
-                <Link
-                  href='https://www.instagram.com/pi_network/'
-                  target='_blank'
-                  className='text-stone-300 transition-colors'
-                >
-                  <FaInstagram size={24} />
-                </Link>
-              </div>
+              {/* Social Icons */}
+              <ul className='flex items-center space-x-4 ml-4'>
+                <li className='relative group'>
+                  <div className='transform transition-all duration-300 hover:-translate-y-2 overflow-hidden'>
+                    <Link
+                      href='https://twitter.com/pi_network'
+                      target='_blank'
+                      className='text-stone-300 flex items-center justify-center h-10 w-10 rounded-full hover:bg-white hover:bg-opacity-20'
+                    >
+                      <Image
+                        src='/icons8-x.svg'
+                        alt='x-icon'
+                        width={24}
+                        height={24}
+                        style={{ filter: "brightness(0) invert(1)" }}
+                      />
+                    </Link>
+                  </div>
+                </li>
+                <li className='relative group'>
+                  <div className='transform transition-all duration-300 hover:-translate-y-2 overflow-hidden'>
+                    <Link
+                      href='https://www.facebook.com/PiNetwork/'
+                      target='_blank'
+                      className='text-stone-300 flex items-center justify-center h-10 w-10 rounded-full hover:bg-white hover:bg-opacity-20'
+                    >
+                      <FaFacebook size={24} />
+                    </Link>
+                  </div>
+                </li>
+                <li className='relative group'>
+                  <div className='transform transition-all duration-300 hover:-translate-y-2 overflow-hidden'>
+                    <Link
+                      href='https://www.youtube.com/channel/UC5KVbmYpYhKkVjkRyUeRdbA'
+                      target='_blank'
+                      className='text-stone-300 flex items-center justify-center h-10 w-10 rounded-full hover:bg-white hover:bg-opacity-20'
+                    >
+                      <FaYoutube size={24} />
+                    </Link>
+                  </div>
+                </li>
+                <li className='relative group'>
+                  <div className='transform transition-all duration-300 hover:-translate-y-2 overflow-hidden'>
+                    <Link
+                      href='https://www.instagram.com/pi_network/'
+                      target='_blank'
+                      className='text-stone-300 flex items-center justify-center h-10 w-10 rounded-full hover:bg-white hover:bg-opacity-20'
+                    >
+                      <FaInstagram size={24} />
+                    </Link>
+                  </div>
+                </li>
+              </ul>
             </div>
           </nav>
         </div>
       </div>
 
-      {/*Search Bar Mobile*/}
+      {/*Search Bar*/}
       <div className='w-full'>
         {openSearch && (
           <div
@@ -423,7 +450,7 @@ export default function Navbar() {
                 onClick={() => setOpenSearch(!openSearch)}
                 className='text-stone-300 pb-2'
               >
-                <FaTimes size={20} className='cursor-pointer'/>
+                <FaTimes size={20} className='cursor-pointer' />
               </button>
             </div>
 
