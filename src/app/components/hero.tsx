@@ -73,16 +73,16 @@ export default function Hero() {
   }, []);
 
   return (
-    <main className='bg-[url("/main-bg.jpg")] bg-cover bg-center bg-no-repeat min-h-screen relative '>
+    <main className='bg-[#261339] sm:bg-[url("/main-bg.jpg")] sm-bg-cover sm-bg-center sm-bg-no-repeat min-h-screen relative '>
       <div className='container mx-auto max-w-[1425px] relative pb-[120px]'>
         <div className='px-4 lg:px-16'>
           <div className='flex flex-col lg:flex-row items-center justify-between pt-20 lg:mt-14'>
             {/* Left content */}
-            <div className='lg:w-fit mt-32'>
-              <h1 className='text-white text-4xl lg:text-[65px] font-bold leading-tight mb-8'>
+            <div className='lg:w-fit mt-32 '>
+              <h1 className='text-white text-[29px] lg:text-[65px] font-bold leading-tight mb-8'>
                 The First Digital Currency You Can Mine on Your Phone
               </h1>
-              <p className='text-white text-xl lg:text-2xl mb-12'>
+              <p className='text-white text-[16px] lg:text-2xl mb-12'>
                 Start mining Pi cryptocurrency today with our free, energy-light
                 mobile app!
               </p>
@@ -103,7 +103,7 @@ export default function Hero() {
             </div>
 
             {/* Right content - Phone image */}
-            <div className='lg:w-1/2 mt-16 lg:mt-0'>
+            <div className='hidden lg:block lg:w-1/2 mt-16 lg:mt-0'>
               <div
                 className='relative inline-block group isolate'
                 ref={containerRef}
@@ -148,10 +148,10 @@ export default function Hero() {
 
             {/* Mobile Screen */}
             <div className='lg:hidden mt-16 mb-8'>
-              <div className='bg-[url("/bg-small.jpg")] bg-cover bg-center bg-no-repeat min-w-[350px] h-[200px] relative'>
+              <div className='bg-[url("/small-bg.jpg")] bg-cover bg-center bg-no-repeat min-w-[350px] h-[200px] relative'>
                 {/* play button */}
                 <div className='absolute inset-0 flex items-center justify-center'>
-                  <div className='bg-black/80 py-8 px-[48px] rounded-[20px]'>
+                  <div className='bg-black/80 py-[20px] px-[48px] rounded-[20px]'>
                     <Link href='https://www.youtube-nocookie.com/watch?v=MsOaC61cR3U'>
                       <FaPlay className='text-white text-xl w-8 h-8' />
                     </Link>

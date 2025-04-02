@@ -137,14 +137,14 @@ export default function Navbar() {
       className={`
         fixed top-0 left-0 right-0 w-full
         ${getHeaderBgClass()}
-        z-[1200] transition-colors duration-300
+        z-[1900] transition-colors duration-300
       `}
     >
       <div className='container mx-auto max-w-[1425px] transition-all duration-300'>
         <div className='px-4 sm:px-4 lg:px-8'>
           <nav className='flex justify-between items-center py-2 lg:mt-3.5'>
             {/* Logo */}
-            <div className='flex items-center'>
+            <div className='flex items-center z-[999]'>
               <Link
                 href='/'
                 className='relative w-[120px] h-[30px] md:w-[220px] md:h-[60px]'
@@ -269,7 +269,7 @@ export default function Navbar() {
                     <Link
                       href='https://www.instagram.com/pi_network/'
                       target='_blank'
-                      className='text-stone-300 block'
+                      className='text-white block'
                     >
                       <FaInstagram size={24} />
                     </Link>
@@ -279,7 +279,7 @@ export default function Navbar() {
 
               {/* Search Link */}
               <span
-                className='ml-6 px-6 py-2 text-stone-300 transition-colors cursor-pointer'
+                className='ml-6 px-6 py-2 text-white transition-colors cursor-pointer'
                 onClick={() => setOpenSearch(!openSearch)}
               >
                 <FaSearch size={24} />
@@ -287,19 +287,28 @@ export default function Navbar() {
             </div>
 
             {/* Mobile Menu */}
-            <div className={`md:hidden flex items-center space-x-4`}>
+            <div className={`md:hidden flex items-center space-x-4 z-[99]`}>
               <FaSearch
-                size={24}
-                className='text-stone-300 cursor-pointer'
+                size={23}
+                className='text-white cursor-pointer'
                 onClick={() => setOpenSearch(!openSearch)}
               />
-              <button
-                title='button'
-                type='button'
-                onClick={toggleMenu}
-                className='text-white transition-colors'
-              >
-                <div>
+              {isOpen ? (
+                <button
+                  type='button'
+                  onClick={toggleMenu}
+                  className='text-white'
+                  title='button'
+                >
+                  <FaTimes size={25} />
+                </button>
+              ) : (
+                <button
+                  title='button'
+                  type='button'
+                  onClick={toggleMenu}
+                  className='text-white transition-colors'
+                >
                   <Image
                     src='/align-left.svg'
                     alt='hamburger-icon'
@@ -307,44 +316,47 @@ export default function Navbar() {
                     height={25}
                     style={{ filter: "brightness(0) invert(1)" }}
                   />
-                </div>
-              </button>
+                </button>
+              )}
             </div>
 
             {/* Sliding Drawer */}
             <div
-              className={`md:hidden fixed top-0 right-0 w-full h-full bg-[#261339e5] z-50 p-6 transform transition-transform duration-300 ${
+              className={`md:hidden fixed top-0 right-0 w-full h-full bg-linear-to-b from-[#5c4286] to-[#282131] opacity-90 z-50 p-6 transform transition-transform duration-300 ${
                 isOpen ? "translate-y-0" : "translate-y-full"
               }`}
             >
               {/* Close button at the top */}
-              <div className='flex justify-end mb-4'>
-                <button
-                  type='button'
-                  onClick={toggleMenu}
-                  className='text-white'
-                  title='button'
-                >
-                  <FaTimes size={24} />
-                </button>
-              </div>
 
               {/* Mobile Nav Items */}
               <nav className='flex flex-col space-y-4 mb-6 mt-40'>
                 {navLinks.map((link, index) => (
                   <div key={index} className='relative'>
-                    <button
-                      type='button'
-                      onClick={() => toggleDropdown(link.name)}
-                      className='flex items-center text-stone-300 transition-colors w-full text-left cursor-pointer'
-                    >
-                      {link.name}
-                      {chevronStates[link.name] ? (
-                        <FaChevronUp className='ml-2 text-stone-300' />
-                      ) : (
-                        <FaChevronDown className='ml-2 text-stone-300' />
-                      )}
-                    </button>
+                    {link.hasChevron ? (
+                      // For links with dropdown content
+                      <button
+                        type='button'
+                        onClick={() => toggleDropdown(link.name)}
+                        className='flex items-center justify-between w-full text-white transition-colors text-left cursor-pointer text-[20px]'
+                      >
+                        <span>{link.name}</span>
+                        <div>
+                          {chevronStates[link.name] ? (
+                            <FaChevronUp className='text-white' />
+                          ) : (
+                            <FaChevronDown className='text-white' />
+                          )}
+                        </div>
+                      </button>
+                    ) : (
+                      // For links without dropdown content
+                      <Link
+                        href='#'
+                        className='block w-full text-white text-[20px] py-2'
+                      >
+                        {link.name}
+                      </Link>
+                    )}
 
                     {/* Mobile Dropdown */}
                     {link.hasChevron && chevronStates[link.name] && (
@@ -368,7 +380,7 @@ export default function Navbar() {
               </nav>
 
               {/* Social Icons */}
-              <ul className='flex items-center space-x-4 ml-4'>
+              <ul className='flex items-center space-x-4'>
                 <li className='relative group'>
                   <div className='transform transition-all duration-300 hover:-translate-y-2 overflow-hidden'>
                     <Link
@@ -426,11 +438,11 @@ export default function Navbar() {
       </div>
 
       {/*Search Bar*/}
-      <div className='w-full'>
+      <div className='w-full '>
         {openSearch && (
           <div
             className={clsx(
-              "bg-[#593b8b] p-4 w-full transition-all duration-300 h-[150px]", // Base styles that apply to all screen sizes
+              "bg-[#593b8b] p-4 w-full transition-all duration-300 h-[150px] z-[999]", // Base styles that apply to all screen sizes
               "absolute top-0 right-0 ", // Mobile styles (default)
               "sm:fixed sm:top-0 sm:left-0 sm:z-50 sm:h-[200px]" // Desktop styles (sm and above)
             )}
