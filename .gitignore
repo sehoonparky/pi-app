@@ -14,6 +14,10 @@
 .env.local
 .env*.local
 
+# production variables
+# .env.development
+# .env*.development
+
 # testing
 /coverage
 

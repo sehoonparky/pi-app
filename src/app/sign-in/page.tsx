@@ -26,7 +26,7 @@ export default function SignIn() {
       setIsSubmitting(true);
       // console.log("Submitting to:", `${process.env.NEXT_PUBLIC_API}/register`);
 
-      const response = await fetch(`/api/register`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API}/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
