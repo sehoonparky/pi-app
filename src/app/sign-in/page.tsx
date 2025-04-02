@@ -53,7 +53,7 @@ export default function SignIn() {
   };
 
   return (
-    <div className='lg:min-h-[100vh] flex flex-col lg:flex-row bg-[url("/main-bg.jpg")] bg-cover bg-center bg-no-repeat '>
+    <div className='min-h-screen flex flex-col lg:flex-row bg-white'>
       <div className='lg:w-1/2 flex flex-col justify-center p-8 bg-white'>
         <div className='max-w-md w-full mx-auto'>
           <div className='bg-[#28123d] p-8 flex justify-center items-center'>
@@ -125,7 +125,7 @@ export default function SignIn() {
           </form>
         </div>
       </div>
-      <div className='bg-fc flex items-center justify-center p-8 min-h-[50vh] lg:min-h-full lg:w-1/2'>
+      <div className='hidden lg:flex lg:bg-[url("/main-bg.jpg")] lg:bg-cover lg:bg-center lg:bg-no-repeat lg:items-center lg:justify-center lg:p-8 lg:min-h-full lg:w-1/2'>
         <div className='max-w-md text-center'>
           <h2 className='text-3xl font-bold text-[#fbb44a]'>Welcome Back!</h2>
           <p className='mt-4 text-lg text-white'>
