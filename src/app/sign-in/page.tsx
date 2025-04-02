@@ -20,12 +20,14 @@ export default function SignIn() {
     resolver: zodResolver(schema),
   });
 
+  const baseurl = process.env.NEXT_PUBLIC_API || "/api";
+
   // Form Submission Handler
   const onSubmit: SubmitHandler<FormSchema> = async (data) => {
     try {
       setIsSubmitting(true);
 
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API}/register`, {
+      const response = await fetch(`${baseurl}/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
