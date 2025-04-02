@@ -142,7 +142,7 @@ export default function Navbar() {
     >
       <div className='container mx-auto max-w-[1425px] transition-all duration-300'>
         <div className='px-4 sm:px-4 lg:px-8'>
-          <nav className='flex justify-between items-center py-2 lg:mt-3.5'>
+          <nav className='flex justify-between items-center py-2 lg:mt-3.5 overflow-hidden'>
             {/* Logo */}
             <div className='flex items-center z-[999]'>
               <Link

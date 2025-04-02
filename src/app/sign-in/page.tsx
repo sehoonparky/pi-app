@@ -25,16 +25,13 @@ export default function SignIn() {
     try {
       setIsSubmitting(true);
 
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_ANALYTICS_ID}/register`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        }
-      );
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API}/register`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
 
       if (!response.ok) {
         const error = await response.json();

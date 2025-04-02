@@ -4,7 +4,7 @@ export default function Home() {
   return (
     <main className='bg-white'>
       {/* Hero Section */}
-      <div className='bg-[url("/curve-bg-1.png")] sm:bg-[url("/curve-bg.png")] bg-cover bg-center bg-no-repeat text-white text-center py-16 px-4 mx-2 sm:mx-0'>
+      <div className='bg-[url("/curve-bg-1.png")] sm:bg-[url("/curve-bg.png")] bg-cover bg-center bg-no-repeat text-white text-center py-16 px-4 sm:mx-0'>
         <div className='z-10 relative pb-24'>
           <h1 className='text-2xl md:text-3xl font-semibold mb-2'>
             Mining crypto is hard.
