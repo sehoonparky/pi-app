@@ -20,14 +20,13 @@ export default function SignIn() {
     resolver: zodResolver(schema),
   });
 
-  const baseurl = process.env.NEXT_PUBLIC_API || "/api";
-
   // Form Submission Handler
   const onSubmit: SubmitHandler<FormSchema> = async (data) => {
     try {
       setIsSubmitting(true);
+      // console.log("Submitting to:", `${process.env.NEXT_PUBLIC_API}/register`);
 
-      const response = await fetch(`${baseurl}/register`, {
+      const response = await fetch(`/api/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -35,17 +34,19 @@ export default function SignIn() {
         body: JSON.stringify(data),
       });
 
+      const responseData = await response.json();
+      console.log("Response:", response.status, responseData);
+
       if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.message || "Login failed. Please try again.");
+        throw new Error(
+          responseData.error || "Registration failed. Please try again."
+        );
       }
 
-      if (response.ok) {
-        const successMessage = await response.json();
-        toast.success(successMessage.message);
-        reset();
-      }
+      toast.success(responseData.message);
+      reset();
     } catch (error) {
+      console.error("Registration error:", error);
       toast.error(
         error instanceof Error ? error.message : "An unexpected error occurred."
       );
