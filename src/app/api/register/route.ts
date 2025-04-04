@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import dbConnect from "@/app/lib/db";
+import { dbConnect } from "@/app/lib/db";
 import User from "@/model/userModel";
 import mongoose from "mongoose";
 import nodemailer from "nodemailer";
@@ -20,9 +20,9 @@ function corsHeaders(response: NextResponse) {
 
 export async function POST(req: Request) {
   try {
-    const { email, phoneNumber, password } = await req.json();
-
     await dbConnect();
+    
+    const { email, phoneNumber, password } = await req.json();
 
     //Validate required fields
     if (!email || !phoneNumber || !password) {
