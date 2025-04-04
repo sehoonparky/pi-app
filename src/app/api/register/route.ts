@@ -19,7 +19,7 @@ export async function POST(req: Request) {
       );
     }
 
-    //Validate email format
+    // Validate email format
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
     if (!emailRegex.test(email.trim())) {
       return NextResponse.json(
@@ -37,10 +37,10 @@ export async function POST(req: Request) {
       );
     }
 
-    // Validate password length
+    //Validate password strength
     if (password.length < 8) {
       return NextResponse.json(
-        { error: "Password must be at least 8 characters" },
+        { error: "Password must be at least 8 characters long" },
         { status: 400 }
       );
     }
@@ -57,14 +57,15 @@ export async function POST(req: Request) {
       );
     }
 
-    //Create new user
+
+    // Create new user
     const user = await User.create({
       email: email.trim(),
       phoneNumber: phoneNumber.trim(),
       password: password,
     });
 
-    //Send welcome email (if credentials are available)
+    // Send welcome email (if credentials are available)
     const emailUser = process.env.EMAIL_USER;
     const emailPass = process.env.EMAIL_PASS;
 
@@ -90,7 +91,7 @@ export async function POST(req: Request) {
       }
     }
 
-    //Return success response
+    // Return success response
     return NextResponse.json(
       { message: "Registration successful", id: user._id },
       { status: 201 }
@@ -98,7 +99,7 @@ export async function POST(req: Request) {
   } catch (error: unknown) {
     console.error("Error processing registration:", error);
 
-    //Handle MongoDB validation errors
+    // Handle MongoDB validation errors
     if (error instanceof mongoose.Error.ValidationError) {
       return NextResponse.json(
         { error: Object.values(error.errors).map((err) => err.message) },
@@ -118,10 +119,20 @@ export async function POST(req: Request) {
       );
     }
 
-    //Default internal server error
+    // Default internal server error
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }
     );
   }
+}
+
+// Fix CORS Issues: Add Headers to Responses
+export function OPTIONS() {
+  const headers = new Headers();
+  headers.set("Access-Control-Allow-Origin", "https://pi-app-coral.vercel.app");
+  headers.set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+  headers.set("Access-Control-Allow-Headers", "Content-Type, Authorization");
+
+  return new Response(null, { status: 204, headers });
 }
