@@ -14,7 +14,7 @@
     "cors": "^2.8.5",
     "lucide-react": "^0.484.0",
     "mongoose": "^8.12.1",
-    "next": "15.2.2",
+    "next": "15.2.4",
     "nodemailer": "^6.10.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
