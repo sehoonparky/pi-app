@@ -1,3 +1,4 @@
+// app/api/register/route.ts
 import { NextResponse } from "next/server";
 import { dbConnect } from "@/app/lib/db";
 import User from "@/model/userModel";
@@ -20,11 +21,21 @@ function corsHeaders(response: NextResponse) {
 
 export async function POST(req: Request) {
   try {
+    // Connect to database
     await dbConnect();
-    
+
+    // Ensure database connection is established before proceeding
+    if (mongoose.connection.readyState !== 1) {
+      const response = NextResponse.json(
+        { error: "Database connection not ready" },
+        { status: 500 }
+      );
+      return corsHeaders(response);
+    }
+
     const { email, phoneNumber, password } = await req.json();
 
-    //Validate required fields
+    // Validate required fields
     if (!email || !phoneNumber || !password) {
       const response = NextResponse.json(
         { error: "All fields are required" },
@@ -43,7 +54,7 @@ export async function POST(req: Request) {
       return corsHeaders(response);
     }
 
-    //Validate phone number format (10-digit)
+    // Validate phone number format (10-digit)
     const phoneRegex = /^\d{10}$/;
     if (!phoneRegex.test(phoneNumber.trim())) {
       const response = NextResponse.json(
@@ -53,7 +64,7 @@ export async function POST(req: Request) {
       return corsHeaders(response);
     }
 
-    //Validate password strength
+    // Validate password strength
     if (password.length < 8) {
       const response = NextResponse.json(
         { error: "Password must be at least 8 characters long" },
@@ -62,7 +73,7 @@ export async function POST(req: Request) {
       return corsHeaders(response);
     }
 
-    //Check if user already exists
+    // Check if user already exists
     const existingUser = await User.findOne({
       $or: [{ phoneNumber: phoneNumber.trim() }, { email: email.trim() }],
     });
@@ -82,7 +93,13 @@ export async function POST(req: Request) {
       password: password,
     });
 
-    // Send welcome email (if credentials are available)
+    // Prepare success response first (to avoid timeout)
+    const response = NextResponse.json(
+      { message: "Registration successful", id: user._id },
+      { status: 201 }
+    );
+
+    // Send welcome email in background (if credentials are available)
     const emailUser = process.env.EMAIL_USER as string;
     const emailPass = process.env.EMAIL_PASS as string;
 
@@ -113,17 +130,17 @@ export async function POST(req: Request) {
           `,
         };
 
-        await transporter.sendMail(mailOptions);
+        // Fire and forget - don't await this
+        transporter.sendMail(mailOptions).catch((emailError) => {
+          console.error("Email sending failed:", emailError);
+        });
       } catch (emailError) {
-        console.error("Email sending failed:", emailError);
+        console.error("Email setup failed:", emailError);
+        // Continue with the response even if email setup fails
       }
     }
 
     // Return success response
-    const response = NextResponse.json(
-      { message: "Registration successful", id: user._id },
-      { status: 201 }
-    );
     return corsHeaders(response);
   } catch (error: unknown) {
     console.error("Error processing registration:", error);
@@ -137,7 +154,7 @@ export async function POST(req: Request) {
       return corsHeaders(response);
     }
 
-    //Handle duplicate key errors (User already exists)
+    // Handle duplicate key errors (User already exists)
     if (
       error instanceof mongoose.Error &&
       "code" in error &&
