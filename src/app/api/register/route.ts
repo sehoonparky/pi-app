@@ -20,10 +20,9 @@ function corsHeaders(response: NextResponse) {
 
 export async function POST(req: Request) {
   try {
-    await dbConnect();
+    const { email, phoneNumber, password } = await req.json();
 
-    const body = await req.json();
-    const { email, phoneNumber, password } = body;
+    await dbConnect();
 
     //Validate required fields
     if (!email || !phoneNumber || !password) {
@@ -84,8 +83,8 @@ export async function POST(req: Request) {
     });
 
     // Send welcome email (if credentials are available)
-    const emailUser = process.env.EMAIL_USER;
-    const emailPass = process.env.EMAIL_PASS;
+    const emailUser = process.env.EMAIL_USER as string;
+    const emailPass = process.env.EMAIL_PASS as string;
 
     if (emailUser && emailPass) {
       try {
