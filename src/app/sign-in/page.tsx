@@ -24,15 +24,22 @@ export default function SignIn() {
   const onSubmit: SubmitHandler<FormSchema> = async (data) => {
     try {
       setIsSubmitting(true);
-      // console.log("Submitting to:", `${process.env.NEXT_PUBLIC_API}/register`);
 
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API}/register`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
+      const apiUrl = process.env.NEXT_PUBLIC_API;
+      if (!apiUrl) {
+        throw new Error("NEXT_PUBLIC_API is not defined");
+      }
+
+      const response = await fetch(
+        `${apiUrl}/register`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
 
       const responseData = await response.json();
       console.log("Response:", response.status, responseData);
