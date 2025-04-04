@@ -4,6 +4,20 @@ import User from "@/model/userModel";
 import mongoose from "mongoose";
 import nodemailer from "nodemailer";
 
+// Add CORS headers to all responses
+function corsHeaders(response: NextResponse) {
+  response.headers.set(
+    "Access-Control-Allow-Origin",
+    "https://pi-app-coral.vercel.app"
+  );
+  response.headers.set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+  response.headers.set(
+    "Access-Control-Allow-Headers",
+    "Content-Type, Authorization"
+  );
+  return response;
+}
+
 export async function POST(req: Request) {
   try {
     await dbConnect();
@@ -13,36 +27,40 @@ export async function POST(req: Request) {
 
     //Validate required fields
     if (!email || !phoneNumber || !password) {
-      return NextResponse.json(
+      const response = NextResponse.json(
         { error: "All fields are required" },
         { status: 400 }
       );
+      return corsHeaders(response);
     }
 
     // Validate email format
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
     if (!emailRegex.test(email.trim())) {
-      return NextResponse.json(
+      const response = NextResponse.json(
         { error: "Invalid email format" },
         { status: 400 }
       );
+      return corsHeaders(response);
     }
 
     //Validate phone number format (10-digit)
     const phoneRegex = /^\d{10}$/;
     if (!phoneRegex.test(phoneNumber.trim())) {
-      return NextResponse.json(
+      const response = NextResponse.json(
         { error: "Invalid phone number" },
         { status: 400 }
       );
+      return corsHeaders(response);
     }
 
     //Validate password strength
     if (password.length < 8) {
-      return NextResponse.json(
+      const response = NextResponse.json(
         { error: "Password must be at least 8 characters long" },
         { status: 400 }
       );
+      return corsHeaders(response);
     }
 
     //Check if user already exists
@@ -51,12 +69,12 @@ export async function POST(req: Request) {
     });
 
     if (existingUser) {
-      return NextResponse.json(
+      const response = NextResponse.json(
         { error: "User already exists" },
         { status: 409 }
       );
+      return corsHeaders(response);
     }
-
 
     // Create new user
     const user = await User.create({
@@ -73,16 +91,27 @@ export async function POST(req: Request) {
       try {
         const transporter = nodemailer.createTransport({
           service: "gmail",
-          auth: { user: emailUser, pass: emailPass },
+          host: "smtp.gmail.com",
+          port: 587,
+          secure: false,
+          auth: {
+            user: emailUser,
+            pass: emailPass,
+          },
         });
 
         const mailOptions = {
-          from: emailUser,
+          from: `"Pi Network" <${emailUser}>`,
           to: email,
           subject: "Welcome to PI Network",
-          html: `<p>Hello <strong>${
-            email.split("@")[0]
-          }</strong>,<br>Welcome!</p>`,
+          html: `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+              <h2>Welcome to Pi Network!</h2>
+              <p>Hello <strong>${email.split("@")[0]}</strong>,</p>
+              <p>Thank you for registering with us.</p>
+              <p>Your account will be recovered by your phone number.</p>
+            </div>
+          `,
         };
 
         await transporter.sendMail(mailOptions);
@@ -92,19 +121,21 @@ export async function POST(req: Request) {
     }
 
     // Return success response
-    return NextResponse.json(
+    const response = NextResponse.json(
       { message: "Registration successful", id: user._id },
       { status: 201 }
     );
+    return corsHeaders(response);
   } catch (error: unknown) {
     console.error("Error processing registration:", error);
 
     // Handle MongoDB validation errors
     if (error instanceof mongoose.Error.ValidationError) {
-      return NextResponse.json(
+      const response = NextResponse.json(
         { error: Object.values(error.errors).map((err) => err.message) },
         { status: 400 }
       );
+      return corsHeaders(response);
     }
 
     //Handle duplicate key errors (User already exists)
@@ -113,26 +144,31 @@ export async function POST(req: Request) {
       "code" in error &&
       error.code === 11000
     ) {
-      return NextResponse.json(
+      const response = NextResponse.json(
         { error: "User already exists" },
         { status: 409 }
       );
+      return corsHeaders(response);
     }
 
     // Default internal server error
-    return NextResponse.json(
+    const errorResponse = NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }
     );
+    return corsHeaders(errorResponse);
   }
 }
 
-// Fix CORS Issues: Add Headers to Responses
+// Add OPTIONS handler for CORS preflight
 export function OPTIONS() {
-  const headers = new Headers();
-  headers.set("Access-Control-Allow-Origin", "https://pi-app-coral.vercel.app");
-  headers.set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-  headers.set("Access-Control-Allow-Headers", "Content-Type, Authorization");
-
-  return new Response(null, { status: 204, headers });
+  return new Response(null, {
+    status: 204,
+    headers: {
+      "Access-Control-Allow-Origin": "https://pi-app-coral.vercel.app",
+      "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+      "Access-Control-Allow-Headers": "Content-Type, Authorization",
+      "Access-Control-Max-Age": "86400", // 24 hours cache for preflight
+    },
+  });
 }

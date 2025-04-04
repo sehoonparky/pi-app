@@ -116,23 +116,23 @@ export default function Navbar() {
   const dropdownContent = {
     "Pi BlockChain": [
       { name: "Pi Node", href: "/pi-node/" },
-      { name: "Pi BlockExplorer", href: "/pi-block-explorer/" },
-      { name: "Pi Whitepaper", href: "/pi-white-paper/" },
-      { name: "Roadmap", href: "/pi-roadmap/" },
+      { name: "Pi BlockExplorer", href: "#" },
+      { name: "Pi Whitepaper", href: "#" },
+      { name: "Roadmap", href: "#" },
       { name: "Sign In", href: "/sign-in" },
     ],
     Developers: [
-      { name: "New Developers", href: "/developers/" },
-      { name: "Why Build on Pi", href: "/why-build-on-pi/" },
-      { name: "Pi Hackathon", href: "/pi-hackathon/" },
-      { name: "KYB Verified Businesses", href: "/kyb-list/" },
-      { name: "KYB Your Business", href: "/kyb-business/" },
-      { name: "Partner With Pi", href: "/partner/" },
+      { name: "New Developers", href: "#" },
+      { name: "Why Build on Pi", href: "#" },
+      { name: "Pi Hackathon", href: "#/" },
+      { name: "KYB Verified Businesses", href: "#" },
+      { name: "KYB Your Business", href: "#" },
+      { name: "Partner With Pi", href: "#" },
     ],
     Community: [
-      { name: "Blog", href: "/blog/" },
-      { name: "Media Outreach", href: "/newsroom/" },
-      { name: "Safety Center", href: "/safety/" },
+      { name: "Blog", href: "#" },
+      { name: "Media Outreach", href: "#" },
+      { name: "Safety Center", href: "#" },
     ],
   };
 

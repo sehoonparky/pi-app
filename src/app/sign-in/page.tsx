@@ -25,26 +25,19 @@ export default function SignIn() {
     try {
       setIsSubmitting(true);
 
-      const apiUrl = process.env.NEXT_PUBLIC_API;
-      if (!apiUrl) {
-        throw new Error("NEXT_PUBLIC_API is not defined");
-      }
-
-      const response = await fetch(apiUrl, {
+      const response = await fetch("/api/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify(data),
       });
 
       const responseData = await response.json();
-      console.log("Response:", response.status, responseData);
 
       if (!response.ok) {
-        throw new Error(
-          responseData.error || "Registration failed. Please try again."
-        );
+        throw new Error(responseData.error || "Registration failed");
       }
 
       toast.success(responseData.message);
@@ -52,7 +45,7 @@ export default function SignIn() {
     } catch (error) {
       console.error("Registration error:", error);
       toast.error(
-        error instanceof Error ? error.message : "An unexpected error occurred."
+        error instanceof Error ? error.message : "An unexpected error occurred"
       );
     } finally {
       setIsSubmitting(false);
