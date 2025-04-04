@@ -30,16 +30,13 @@ export default function SignIn() {
         throw new Error("NEXT_PUBLIC_API is not defined");
       }
 
-      const response = await fetch(
-        `${apiUrl}/register`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        }
-      );
+      const response = await fetch(apiUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
 
       const responseData = await response.json();
       console.log("Response:", response.status, responseData);
